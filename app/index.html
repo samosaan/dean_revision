@@ -96,6 +96,15 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .t-sub{display:block;font-weight:600;color:var(--muted);font-size:.85rem}
 .t-coins{font-family:var(--display);font-weight:600;color:var(--ocre);font-size:.9rem;white-space:nowrap}
 .go{border:0;background:var(--pine);color:var(--pine-ink);border-radius:10px;padding:6px 12px;font-weight:800;font-size:.85rem;white-space:nowrap}
+.t-act{display:flex;gap:6px}
+.go.ghost{background:var(--surface);color:var(--pine);border:2px solid var(--pine)}
+.memo-index{display:flex;gap:6px;flex-wrap:wrap}
+.memo-index .chip{border:0;padding:6px 12px}
+.memo-body h4{font-family:var(--display);font-weight:600;font-size:1rem;margin:6px 0 0;color:var(--pine)}
+.memo-body p{margin:0}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+details.memo{scroll-margin-top:90px}
+.tag{font-family:var(--body);font-size:.7rem;font-weight:800;background:var(--ocre-soft);color:var(--ocre);border-radius:6px;padding:1px 6px;vertical-align:middle}
 .note{margin-top:12px;background:var(--pine-soft);border-radius:12px;padding:10px 14px;font-weight:600}
 .exams{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .exam{border-radius:14px;padding:12px 14px;background:var(--surface-2);border-top:5px solid var(--c)}
@@ -227,12 +236,12 @@ const SUBJ = {
   aaa:{n:"Apprendre à apprendre",c:"var(--s-aaa)"}
 };
 const EXAMS = [
-  {d:"2026-10-06",s:"maths",t:"Mini-test sur 5 points : comparaison des nombres entiers"},
-  {d:"2026-10-06",s:"anglais",t:"QCM sur le début du film (Kevin et sa famille)"},
-  {d:"2026-10-06",s:"francais",t:"Rédaction en classe : l'aventure (dictionnaire)"},
-  {d:"2026-10-06",s:"svt",t:"Révision : Living organisms"},
-  {d:"2026-10-07",s:"hg",t:"Mini-évaluation : objets d'art, définitions, dates"},
-  {d:"2026-10-09",s:"maths",t:"Mini-test : divisions euclidiennes"}
+  {d:"2026-10-06",s:"maths",m:"cmp",t:"Mini-test sur 5 points : comparaison des nombres entiers"},
+  {d:"2026-10-06",s:"anglais",m:"ang",t:"QCM sur le début du film (Kevin et sa famille)"},
+  {d:"2026-10-06",s:"francais",m:"fr",t:"Rédaction en classe : l'aventure (dictionnaire)"},
+  {d:"2026-10-06",s:"svt",m:"svt",t:"Révision : Living organisms"},
+  {d:"2026-10-07",s:"hg",m:"hg",t:"Mini-évaluation : objets d'art, définitions, dates"},
+  {d:"2026-10-09",s:"maths",m:"div",t:"Mini-test : divisions euclidiennes"}
 ];
 // t: texte, s: matière, p: pièces, defi: défi lié
 const DAYS = [
@@ -252,10 +261,12 @@ const DAYS = [
   {id:"d3c",s:"anglais",t:"Défi Anglais",p:5,defi:"ang"},
   {id:"d3d",s:"hg",t:"Rappel express : Défi Histoire (10 min)",p:5,defi:"hg"}]},
  {d:"2026-09-30",dur:"1 h",title:"Préparer l'aventure",tasks:[
-  {id:"d4a",s:"francais",t:"Lister 5 idées d'histoires d'aventure",p:5},
+  {id:"d4a",s:"francais",t:"Lire le mémo : les 5 étapes du récit",p:5},
+  {id:"d4f",s:"francais",t:"Lister 5 idées d'histoires d'aventure",p:5},
   {id:"d4b",s:"francais",t:"Noter 10 mots utiles (lieux, émotions, actions)",p:5},
   {id:"d4c",s:"francais",t:"Faire un plan au brouillon : début, péripéties, fin",p:10},
-  {id:"d4d",s:"maths",t:"Rappel express : Défi Comparaison (10 min)",p:5,defi:"cmp"}]},
+  {id:"d4d",s:"francais",t:"Défi Français",p:5,defi:"fr"},
+  {id:"d4e",s:"maths",t:"Rappel express : Défi Comparaison (10 min)",p:5,defi:"cmp"}]},
  {d:"2026-10-01",dur:"45 min",title:"Matériel et rappels",tasks:[
   {id:"d5a",s:"pc",t:"Vérifier le matériel de Physique-chimie : cahier, trousse, feuilles",p:5},
   {id:"d5b",s:"aaa",t:"Coller le quiz et la feuille des 10 commandements",p:5},
@@ -281,7 +292,8 @@ const DAYS = [
   {id:"d9b",s:"anglais",t:"Défi Anglais (QCM de demain)",p:5,defi:"ang"},
   {id:"d9c",s:"svt",t:"Défi SVT",p:5,defi:"svt"},
   {id:"d9d",s:"hg",t:"Défi Histoire",p:5,defi:"hg"},
-  {id:"d9e",s:"francais",t:"Cartable : dictionnaire, cahiers, trousse",p:5}]},
+  {id:"d9e",s:"francais",t:"Rappel express : Défi Français",p:5,defi:"fr"},
+  {id:"d9f",s:"francais",t:"Cartable : dictionnaire, cahiers, trousse",p:5}]},
  {d:"2026-10-06",dur:"30 min le soir",title:"Rentrée",note:"Aujourd'hui : mini-test de maths, QCM d'anglais, rédaction et SVT. Le soir, on prépare l'histoire de demain.",tasks:[
   {id:"d10a",s:"hg",t:"Relire les 5 définitions et les 2 dates",p:5},
   {id:"d10b",s:"hg",t:"Défi Histoire : viser 8 sur 8",p:10,defi:"hg"},
@@ -361,9 +373,15 @@ const HG_BANK=[
   ()=>choice("hg-pigex","Lesquels sont des pigments naturels ?","L'ocre et le charbon",["L'ivoire et les coquillages","Le bois et la pierre","Le blé et l'orge"],"L'ivoire et les coquillages sont des matériaux, pas des pigments."),
   ()=>choice("hg-oeuvres","Parmi ces objets, lequel n'est PAS une œuvre d'art préhistorique citée dans le cours ?","Un livre",["Une statuette","Un collier","Une peinture sur une paroi"],"Les hommes de la Préhistoire n'écrivaient pas : pas de livres !"),
   ()=>choice("hg-sens","Connaît-on avec certitude la signification de ces œuvres d'art ?","Non, les archéologues n'en ont pas de preuve certaine",["Oui, les artistes l'ont écrit","Oui, grâce aux musées","Non, parce qu'on ne les a jamais retrouvées"],"Les archéologues étudient ces œuvres avec précision, mais n'ont pas de preuve certaine de leur sens."),
-  ()=>choice("hg-materiaux","Avec quels matériaux fabriquaient-ils statuettes et colliers ?","L'ivoire et les coquillages",["Le plastique et le verre","Le fer et l'or","Le papier et le carton"],"Le cours cite l'ivoire et les coquillages.")
+  ()=>choice("hg-materiaux","Avec quels matériaux fabriquaient-ils statuettes et colliers ?","L'ivoire et les coquillages",["Le plastique et le verre","Le fer et l'or","Le papier et le carton"],"Le cours cite l'ivoire et les coquillages."),
+  ()=>choice("hg-sedentaire","Au Néolithique, les hommes deviennent sédentaires. Cela veut dire qu'ils…","Vivent toujours au même endroit",["Se déplacent sans cesse","Vivent dans des grottes","Arrêtent de manger de la viande"],"Sédentaire : qui vit au même endroit. Le contraire : nomade."),
+  ()=>choice("hg-avant","Avant le Néolithique, comment les hommes se nourrissaient-ils ?","Par la chasse, la pêche et la cueillette",["En cultivant du blé","En élevant des moutons","En achetant au marché"],"Au Paléolithique, les hommes sont des chasseurs-cueilleurs nomades."),
+  ()=>choice("hg-plantes","Quelles plantes les premiers agriculteurs cultivent-ils ?","Le blé et l'orge",["La pomme de terre et le maïs","Le café et le cacao","La tomate et la banane"],"Blé et orge : les premières céréales cultivées au Proche-Orient."),
+  ()=>choice("hg-animaux","Quels animaux sont domestiqués au Néolithique ?","Chèvres, moutons, porcs, bœufs",["Lions, loups, ours","Mammouths et rennes","Chevaux de course"],"Ces animaux donnent viande, lait, laine et force de travail."),
+  ()=>choice("hg-poterie","À quoi servent les poteries dans les premiers villages ?","À conserver les réserves de nourriture",["À peindre les grottes","À chasser","À écrire"],"Les agriculteurs stockent leurs récoltes : il faut des récipients."),
+  ()=>choice("hg-hache","Quel outil sert à défricher la forêt pour faire des champs ?","La hache en pierre polie",["Le pinceau","Le collier","La statuette"],"Les outils en pierre polie sont typiques du Néolithique.")
 ];
-function genHg(){return shuffle(HG_BANK).slice(0,8).map(f=>f())}
+function genHg(){return shuffle(HG_BANK).slice(0,10).map(f=>f())}
 const LEX=[["To live","Vivre"],["A thing","Une chose"],["Because","Parce que"],["To grow","Grandir"],["To move","Bouger"],["Whole","Entier"],["Sugar","Sucre"],["Dry","Sec"],["Larger","Plus grand"],["To make","Fabriquer"],["Same","Même"],["To remove","Enlever"],["Waste","Déchets"],["To take","Prendre"]];
 const MRS=[["Movement","The ability to move (part or whole body)"],["Respiration","Chemical reactions converting sugar to energy"],["Sensitivity","Detect and respond to the environment"],["Growth","Get larger with increase in dry mass"],["Reproduction","Makes more of the same organism"],["Excretion","Removal of waste produced by the body"],["Nutrition","Absorbing materials from the environment"]];
 function genSvt(){
@@ -398,15 +416,39 @@ const ANG_BANK=[
   ()=>choice("ang-aunt","« Aunt » means…","Tante",["Oncle","Sœur","Cousine"],"Aunt = tante."),
   ()=>choice("ang-cousin","The children of your uncle and aunt are your…","Cousins",["Brothers","Parents","Grandparents"],"Cousins."),
   ()=>choice("ang-sister","« Sister » means…","Sœur",["Frère","Mère","Fille"],"Sister = sœur, brother = frère."),
-  ()=>choice("ang-parents","« Parents » are…","Mother and father",["Brothers and sisters","Uncles and aunts","Cousins"],"Parents = mother + father.")
+  ()=>choice("ang-parents","« Parents » are…","Mother and father",["Brothers and sisters","Uncles and aunts","Cousins"],"Parents = mother + father."),
+  ()=>choice("ang-attic","Where does Kevin sleep the night before the trip?","In the attic (on the third floor)",["In the garden","At his uncle's house","In the car"],"After fighting with Buzz, he is sent to the attic."),
+  ()=>choice("ang-wish","What does Kevin wish before going to bed?","That his family would disappear",["That he could go to Paris","A new bike for Christmas","A dog"],"He is angry and wishes his family would disappear."),
+  ()=>choice("ang-late","Why does the family wake up late?","A storm cuts the power and the alarm clocks don't ring",["They forget to set the alarm","The dog eats the clock","Kevin hides the clocks"],"The power cut resets the alarm clocks."),
+  ()=>choice("ang-count","Why don't they notice that Kevin is missing?","They count a neighbour's child by mistake",["Kevin hides in the plane","They think he is at school","He goes with Uncle Frank"],"In the rush, they count the wrong child."),
+  ()=>choice("ang-youngest","In the family, Kevin is…","The youngest",["The oldest","An only child","A cousin"],"Kevin is the youngest of the five children."),
+  ()=>choice("ang-fuller","Who is Fuller?","Kevin's cousin",["Kevin's father","Kevin's dog","Kevin's teacher"],"Fuller is Kevin's cousin."),
+  ()=>choice("ang-alone2","« Alone » means…","Seul",["Ensemble","Perdu","Content"],"Home Alone = seul à la maison."),
+  ()=>choice("ang-naughty","A « naughty » child is…","Désobéissant, coquin",["Très sage","Très grand","Malade"],"Naughty = coquin, désobéissant."),
+  ()=>choice("ang-forget","« To forget » means…","Oublier",["Trouver","Partir","Pardonner"],"They forget Kevin = ils oublient Kevin.")
 ];
-function genAng(){return shuffle(ANG_BANK).slice(0,8).map(f=>f())}
+function genAng(){return shuffle(ANG_BANK).slice(0,10).map(f=>f())}
+const FR_BANK=[
+  ()=>({type:"order",key:"fr-schema",prompt:"Remets les étapes du récit dans l'ordre",items:shuffle(["Situation initiale","Élément perturbateur","Péripéties","Dénouement","Situation finale"]),correct:["Situation initiale","Élément perturbateur","Péripéties","Dénouement","Situation finale"],sep:"→",explain:"Calme → problème → aventures → solution → fin."}),
+  ()=>choice("fr-perturb","« Soudain, la barque se retourna. » C'est souvent…","L'élément perturbateur",["La situation initiale","La situation finale","Le dénouement"],"Le problème qui lance l'aventure arrive souvent avec « soudain »."),
+  ()=>choice("fr-initiale","La situation initiale présente…","Le héros, le lieu et le moment, quand tout est calme",["La fin de l'histoire","Le danger le plus grand","La morale"],"Qui ? Où ? Quand ?"),
+  ()=>choice("fr-imparfait","Pour décrire le décor (« la forêt … sombre »), on utilise…","L'imparfait : était",["Le passé simple : fut","Le futur : sera","Le présent : est"],"Imparfait pour les descriptions, passé simple pour les actions soudaines."),
+  ()=>choice("fr-ps","Pour une action soudaine (« Tout à coup, il … »), on utilise…","Le passé simple : sauta",["L'imparfait : sautait","Le futur : sautera","L'infinitif : sauter"],"Passé simple : action brève, au premier plan."),
+  ()=>choice("fr-ps-marcher","Il (marcher) au passé simple :","Il marcha",["Il marchait","Il marchera","Il marché"],"Verbes en -er : il -a, ils -èrent."),
+  ()=>choice("fr-ps-partir","Ils (partir) au passé simple :","Ils partirent",["Ils partaient","Ils partèrent","Ils partiront"],"Partir : il partit, ils partirent."),
+  ()=>choice("fr-imp-etre","Nous (être) à l'imparfait :","Nous étions",["Nous serons","Nous fûmes","Nous sommes"],"Imparfait : -ais, -ais, -ait, -ions, -iez, -aient."),
+  ()=>choice("fr-connecteur","Quel mot montre une surprise dans le récit ?","Tout à coup",["Ensuite","Finalement","Le lendemain"],"Soudain, tout à coup : pour un événement inattendu."),
+  ()=>choice("fr-fin","Le dénouement, c'est le moment où…","Le problème est résolu",["Le héros est présenté","Le problème commence","On donne le titre"],"Après le dénouement vient la situation finale."),
+  ()=>choice("fr-lieu","Lequel est un bon lieu pour une aventure ?","Une île inconnue",["Sa chambre bien rangée","La file d'attente de la cantine","Un rayon de supermarché"],"Un lieu inconnu ou dangereux crée l'aventure.")
+];
+function genFr(){const all=shuffle(FR_BANK);const order=FR_BANK[0];return shuffle([order,...all.filter(f=>f!==order).slice(0,7)]).map(f=>f())}
 const DEFIS={
   cmp:{n:"Comparaison",s:"maths",d:"Crocodiles <, >, = et rangements",gen:genCmp,for:"Test du mardi 6"},
   div:{n:"Divisions",s:"maths",d:"Quotient, reste et le schéma",gen:genDiv,for:"Test du vendredi 9"},
   hg:{n:"Histoire",s:"hg",d:"Définitions, dates, objets d'art",gen:genHg,for:"Évaluation du mercredi 7"},
   svt:{n:"SVT",s:"svt",d:"MRS GREN, lexicon, cells",gen:genSvt,for:"Mardi 6"},
-  ang:{n:"Anglais",s:"anglais",d:"Home Alone et la famille",gen:genAng,for:"QCM du mardi 6"}
+  ang:{n:"Anglais",s:"anglais",d:"Home Alone et la famille",gen:genAng,for:"QCM du mardi 6"},
+  fr:{n:"Français",s:"francais",d:"Récit d'aventure, temps du récit",gen:genFr,for:"Rédaction du mardi 6"}
 };
 
 /* ---------- État partagé ---------- */
@@ -477,7 +519,7 @@ function renderHeader(){
   const sel=document.querySelector(".stop.sel"); if(sel) sel.scrollIntoView({block:"nearest",inline:"center"});
 }
 function setTab(t){tab=t;try{localStorage.setItem(LS+"-tab",t)}catch(e){} render()}
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{quiz=null;setTab(b.dataset.tab)});
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{quiz=null;memoBack=null;memoOpen=null;setTab(b.dataset.tab)});
 
 function render(){
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===tab)));
@@ -505,13 +547,13 @@ function viewDay(){
     <ul class="tasks">${d.tasks.map(t=>`<li class="task ${state.done[t.id]?"done":""}" style="--c:${SUBJ[t.s].c}">
       <button class="check" data-task="${t.id}" aria-pressed="${!!state.done[t.id]}" aria-label="Cocher : ${esc(t.t)}">${CHECK}</button>
       <span class="t-txt">${esc(t.t)}${t.sub?`<span class="t-sub">${esc(t.sub)}</span>`:""}</span>
-      ${t.defi?`<button class="go" data-defi="${t.defi}" data-from="${t.id}">Jouer</button>`:""}
+      <span class="t-act">${memoFor(t)?`<button class="go ghost" data-memo="${memoFor(t)}" data-back="jour">Mémo</button>`:""}${t.defi?`<button class="go" data-defi="${t.defi}" data-from="${t.id}">Jouer</button>`:""}</span>
       <span class="t-coins num">+${t.p}</span></li>`).join("")}</ul>
   </section>
   <section class="card"><h3 style="margin-bottom:12px">Les contrôles de la rentrée</h3>
     <div class="exams">${EXAMS.map(e=>{const days=Math.round((pd(e.d)-pd(TODAY))/864e5);return `<div class="exam ${days<0?"past":""}" style="--c:${SUBJ[e.s].c}">
       <span class="left num">${days>1?"J−"+days:days===1?"demain":days===0?"aujourd'hui":"passé"}</span>
-      <div class="when">${longDate(e.d)}</div><div style="font-weight:800">${SUBJ[e.s].n}</div><div class="muted">${esc(e.t)}</div></div>`}).join("")}</div>
+      <div class="when">${longDate(e.d)}</div><div style="font-weight:800">${SUBJ[e.s].n}</div><div class="muted">${esc(e.t)}</div>${e.m?`<button class="go ghost" style="margin-top:8px" data-memo="${e.m}" data-back="jour">Revoir le mémo</button>`:""}</div>`}).join("")}</div>
   </section>`;
 }
 function stars(best,total){const r=total?best/total:0;const n=r>=1?3:r>=.75?2:r>=.5?1:0;return "★".repeat(n)+"☆".repeat(3-n)}
@@ -522,14 +564,13 @@ function viewDefis(){
     <h3>${d.n}</h3><span class="muted">${d.d}</span>
     <span class="best"><span class="stars">${stars(q.best||0,q.total||8)}</span><span>${q.runs?`record ${q.best}/${q.total} · ${q.runs} partie${q.runs>1?"s":""}`:"pas encore joué"}</span></span></button>`}).join("")}</div>`;
 }
-function viewMemo(){
-  return `
-  <details class="memo" style="--c:var(--s-maths)" open><summary>Maths · Comparer les nombres</summary><div class="memo-body">
+const MEMOS=[
+ {k:"cmp",s:"maths",t:"Maths · Comparer les nombres",src:"prof",html:`
     <p><b>Le crocodile</b> ouvre la bouche vers le plus grand : <b>12 &gt; 0</b> (est plus grand que), <b>35 &lt; 53</b> (est plus petit que).</p>
     <p><b>&lt;</b> pour l'ordre <b>c</b>roissant, <b>&gt;</b> pour l'ordre <b>d</b>écroissant.</p>
-    <p>1. Le nombre qui a <b>le plus de chiffres</b> est le plus grand.<br>2. Même nombre de chiffres : on compare <b>de gauche à droite</b>.</p>
-    <p class="muted">Exemples de la prof : 6 502 &lt; 16 502 · 800 &gt; 760 &gt; 759 &gt; 706</p></div></details>
-  <details class="memo" style="--c:var(--s-maths)"><summary>Maths · La division euclidienne</summary><div class="memo-body">
+    <p>1. Le nombre qui a <b>le plus de chiffres</b> est le plus grand.<br>2. Même nombre de chiffres : on compare <b>de gauche à droite</b>, jusqu'au premier chiffre différent.</p>
+    <p class="muted">Exemples de la prof : 6 502 &lt; 16 502 · 800 &gt; 760 &gt; 759 &gt; 706</p>`},
+ {k:"div",s:"maths",t:"Maths · La division euclidienne",src:"prof",html:`
     <p><b>dividende = diviseur × quotient + reste</b>, avec <b>reste &lt; diviseur</b></p>
 <pre>  Dividende →  1 5 8 │ 1 2  ← Diviseur
               -1 2   │────
@@ -538,24 +579,65 @@ function viewMemo(){
                - 3 6
                  ───
   Reste    →       2       158 = 12 × 13 + 2</pre>
-    <p class="muted">Exemple guidé : 884 ÷ 34 → 34 va 2 fois dans 88 (68, reste 20), on abaisse le 4 : 204, 34 va 6 fois (204, reste 0). 884 = 34 × 26 + 0.</p></div></details>
-  <details class="memo" style="--c:var(--s-hg)"><summary>Histoire · Préhistoire et Néolithique</summary><div class="memo-body">
+    <p><b>Exemple guidé, 884 ÷ 34 :</b> 34 va 2 fois dans 88 (2 × 34 = 68, 88 − 68 = 20). On abaisse le 4 : 204. 34 va 6 fois dans 204 (6 × 34 = 204, reste 0). Donc 884 = 34 × 26 + 0.</p>
+    <p class="muted">Pièges : ne pas oublier un 0 au quotient (32 258 ÷ 40 = 806, pas 86). Toujours vérifier que le reste est plus petit que le diviseur.</p>`},
+ {k:"hg",s:"hg",t:"Histoire · Préhistoire et Néolithique",src:"prof",html:`
+    <h4>Les définitions (à savoir par cœur)</h4>
     <dl><dt>Art pariétal</dt><dd>Peintures ou gravures réalisées sur les parois (les murs) d'une grotte.</dd>
     <dt>Pigment</dt><dd>Matière colorée naturelle (ocre, charbon) utilisée pour peindre.</dd>
     <dt>Gravure</dt><dd>Dessin réalisé en creusant la roche avec un outil pointu.</dd>
     <dt>Néolithique</dt><dd>Dernière période de la Préhistoire, marquée par le début de l'agriculture et de l'élevage.</dd>
     <dt>Domestication</dt><dd>Fait d'élever et de reproduire des plantes ou des animaux sauvages pour les rendre utiles à l'homme.</dd></dl>
+    <h4>Les dates</h4>
     <p><b>Vers − 10 000 ans</b> : débuts de l'agriculture et de l'élevage au <b>Proche-Orient</b>.<br><b>Vers − 6 000 ans</b> : ils se répandent en <b>Europe</b>.</p>
-    <p class="muted">Œuvres : peintures et gravures sur les parois, statuettes, colliers. Matériaux : pigments (ocre, charbon), ivoire, coquillages. Leur signification exacte reste inconnue.</p></div></details>
-  <details class="memo" style="--c:var(--s-svt)"><summary>SVT · Living organisms</summary><div class="memo-body">
+    <h4>Les objets d'art</h4>
+    <p>Peintures et gravures sur les parois des grottes, statuettes, colliers. Matériaux : pigments (ocre, charbon), ivoire, coquillages. Les archéologues n'ont pas de preuve certaine de leur signification.</p>
+    <h4>La révolution néolithique <span class="tag">complément</span></h4>
+    <p><b>Avant</b> (Paléolithique) : les hommes sont <b>nomades</b>, ils se déplacent pour chasser, pêcher et cueillir.</p>
+    <p><b>Au Néolithique</b> : ils cultivent des plantes (<b>blé, orge</b>) et élèvent des animaux (<b>chèvres, moutons, porcs, bœufs</b>). Ils deviennent <b>sédentaires</b> : ils restent au même endroit.</p>
+    <p><b>Les premiers villages</b> : maisons en bois, en terre et en pierre, réserves de nourriture, <b>poteries</b> pour conserver, outils en <b>pierre polie</b> (haches pour défricher).</p>
+    <dl><dt>Nomade</dt><dd>Qui se déplace sans cesse, sans habitation fixe.</dd><dt>Sédentaire</dt><dd>Qui vit toujours au même endroit.</dd></dl>`},
+ {k:"svt",s:"svt",t:"SVT · Living organisms",src:"prof",html:`
     <div class="big-letters">${MRS.map(([w])=>`<span>${w[0]}<small>${w}</small></span>`).join("")}</div>
+    <dl>${MRS.map(([w,d])=>`<dt>${w}</dt><dd>${d}</dd>`).join("")}</dl>
     <p><b>Cell</b> : the smallest unit of life. <b>Animal cell</b> : nucleus, cytoplasm, cell membrane, mitochondria. <b>Plant cell</b> : the same <b>+ cell wall, vacuole, chloroplasts</b>.</p>
     <p class="muted">Photosynthesis → chloroplasts · Respiration → mitochondria · DNA → nucleus</p>
-    <dl>${LEX.map(([e,f])=>`<dt>${e}</dt><dd>${f}</dd>`).join("")}</dl></div></details>
-  <details class="memo" style="--c:var(--s-anglais)"><summary>Anglais · Home Alone et la famille</summary><div class="memo-body">
-    <p>Kevin McCallister, 8 ans, est oublié à la maison quand sa famille part à Paris pour Noël.</p>
-    <dl><dt>Mother / Father</dt><dd>Mère / Père (Kate et Peter)</dd><dt>Brother / Sister</dt><dd>Frère / Sœur (Buzz est son grand frère)</dd><dt>Uncle / Aunt</dt><dd>Oncle / Tante</dd><dt>Cousin</dt><dd>Cousin, cousine</dd><dt>Parents</dt><dd>Les parents</dd></dl>
-    <p class="muted">Le QCM portera sur les scènes vues en classe : à compléter avec le cahier.</p></div></details>`;
+    <h4>Lexicon</h4>
+    <dl>${LEX.map(([e,f])=>`<dt>${e}</dt><dd>${f}</dd>`).join("")}</dl>`},
+ {k:"ang",s:"anglais",t:"Anglais · Home Alone, Kevin et sa famille",src:"complément",html:`
+    <h4>L'histoire du début du film</h4>
+    <p>The McCallisters are a <b>big family</b>. They are going to <b>Paris</b> for <b>Christmas</b>. The night before the trip, Kevin (8 years old, the <b>youngest</b>) fights with his brother Buzz and is sent to sleep in the <b>attic</b> (the third floor). He <b>wishes</b> his family would disappear.</p>
+    <p>During the night, a storm cuts the power: the alarm clocks don't ring and the family <b>wakes up late</b>. In the rush, they count a neighbour's child by mistake and <b>forget Kevin</b>. He wakes up <b>home alone</b>.</p>
+    <h4>La famille</h4>
+    <dl><dt>Kate / Peter</dt><dd>His mother / his father</dd><dt>Buzz</dt><dd>His older brother</dd><dt>Uncle Frank</dt><dd>His uncle</dd><dt>Fuller</dt><dd>His cousin</dd></dl>
+    <h4>Le caractère de Kevin</h4>
+    <dl><dt>Young / the youngest</dt><dd>Jeune / le plus jeune</dd><dt>Naughty</dt><dd>Coquin, désobéissant</dd><dt>Lonely</dt><dd>Seul, isolé</dd><dt>Clever</dt><dd>Malin, intelligent</dd><dt>Brave</dt><dd>Courageux</dd></dl>
+    <h4>Vocabulaire</h4>
+    <dl><dt>Mother, father, parents</dt><dd>Mère, père, parents</dd><dt>Brother, sister</dt><dd>Frère, sœur</dd><dt>Uncle, aunt, cousin</dt><dd>Oncle, tante, cousin</dd><dt>A trip, a plane</dt><dd>Un voyage, un avion</dd><dt>To forget</dt><dd>Oublier</dd><dt>Alone</dt><dd>Seul</dd><dt>To wake up late</dt><dd>Se réveiller en retard</dd></dl>`},
+ {k:"fr",s:"francais",t:"Français · Écrire un récit d'aventure",src:"complément",html:`
+    <h4>Les 5 étapes du récit (le schéma narratif)</h4>
+    <ol class="steps"><li><b>Situation initiale</b> : qui ? où ? quand ? Tout est calme.</li><li><b>Élément perturbateur</b> : soudain, un problème arrive.</li><li><b>Péripéties</b> : les aventures, les obstacles, les dangers.</li><li><b>Dénouement</b> : le problème est résolu.</li><li><b>Situation finale</b> : comment ça se termine.</li></ol>
+    <h4>Les temps du récit</h4>
+    <dl><dt>Imparfait</dt><dd>Pour décrire le décor et les personnages : <i>Il faisait nuit, la forêt était sombre.</i></dd><dt>Passé simple</dt><dd>Pour les actions soudaines : <i>Soudain, un bruit retentit. Il courut.</i></dd></dl>
+    <h4>Les mots qui donnent du rythme</h4>
+    <p>Un jour, soudain, tout à coup, alors, ensuite, pendant ce temps, heureusement, finalement, le lendemain.</p>
+    <h4>Les ingrédients de l'aventure</h4>
+    <p>Un héros, un lieu inconnu (forêt, île, grotte, montagne), un danger, des obstacles, du courage, parfois un ami qui aide.</p>
+    <p class="muted">Avant de rendre : majuscules et points, accords, mots vérifiés dans le dictionnaire.</p>`}
+];
+const SUBJ_MEMO={hg:"hg",svt:"svt",anglais:"ang",francais:"fr"};
+const DIV_TASKS=new Set(["d7a","d7b","d7c","d7d","d7e","d8a","d8b","d8c","d11a","d12a","d12b","d13a"]);
+function memoFor(t){if(t.defi&&MEMOS.some(m=>m.k===t.defi))return t.defi; if(t.s==="maths")return DIV_TASKS.has(t.id)?"div":"cmp"; return SUBJ_MEMO[t.s]||null}
+let memoOpen=null, memoBack=null;
+function openMemo(k,back){memoOpen=k;memoBack=back||null;quiz=null;setTab("memo");
+  requestAnimationFrame(()=>{const el=document.getElementById("memo-"+k);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})})}
+function viewMemo(){
+  const backLabel={jour:"Retour à ma journée",defis:"Retour aux défis"}[memoBack];
+  return `${backLabel?`<button class="btn ghost" id="memo-back" style="align-self:flex-start">← ${backLabel}</button>`:""}
+  <nav class="memo-index" aria-label="Aller à un mémo">${MEMOS.map(m=>`<button class="chip" data-memo="${m.k}"><span class="sdot" style="background:${SUBJ[m.s].c}"></span>${m.t.split(" · ")[1]}</button>`).join("")}</nav>
+  ${MEMOS.map(m=>`<details class="memo" id="memo-${m.k}" style="--c:${SUBJ[m.s].c}" ${memoOpen?(memoOpen===m.k?"open":""):(m.k==="cmp"?"open":"")}><summary>${m.t}${m.src==="complément"?' <span class="tag">complément</span>':""}</summary><div class="memo-body">${m.html}
+    ${DEFIS[m.k]?`<div><button class="go" data-defi="${m.k}">Faire le défi ${DEFIS[m.k].n}</button></div>`:""}</div></details>`).join("")}
+  <p class="muted" style="margin:0">« complément » : pas de cours de la prof pour cette partie, c'est ce qu'il est utile de savoir pour le devoir.</p>`;
 }
 function viewPapa(){
   const done=allTasks.filter(t=>state.done[t.id]).length;
@@ -594,6 +676,8 @@ function bind(){
     persist(); render();
   });
   document.querySelectorAll("[data-defi]").forEach(b=>b.onclick=()=>startQuiz(b.dataset.defi,b.dataset.from));
+  document.querySelectorAll("[data-memo]").forEach(b=>b.onclick=e=>{e.stopPropagation();openMemo(b.dataset.memo,b.dataset.back||memoBack)});
+  const mb=$("#memo-back"); if(mb) mb.onclick=()=>{const t=memoBack;memoBack=null;memoOpen=null;setTab(t)};
   const r1=$("#reset1"); if(r1) r1.onclick=()=>{$("#reset-zone").innerHTML=`<span style="font-weight:700;margin-right:10px">Sûr ? Tout sera effacé.</span><button class="btn warn" id="reset2">Oui, effacer</button> <button class="btn ghost" id="reset0">Annuler</button>`;
     $("#reset2").onclick=()=>{state={done:{},quiz:{},log:[],updatedAt:0};persist();render();toast("Remis à zéro")};$("#reset0").onclick=render;};
 }
@@ -664,9 +748,9 @@ function renderResult(){
   $("#view").innerHTML=`<section class="quiz" style="--c:${SUBJ[D.s].c}"><div class="result">
     <h2>Défi ${D.n}</h2><div class="score num">${good}/${total}</div><div class="stars" style="font-size:1.8rem">${stars(good,total)}</div>
     <p style="font-weight:700;margin:0">${msg}</p><p style="margin:0;color:var(--ocre);font-weight:800">+${quiz.gain} pièces${quiz.auto?" (mission cochée)":""}</p>
-    <div class="qactions" style="justify-content:center"><button class="btn ghost" id="back">Retour</button><button class="btn" id="again">Rejouer</button></div></div></section>`;
+    <div class="qactions" style="justify-content:center"><button class="btn ghost" id="back">Retour</button><button class="btn ghost" data-memo="${quiz.k}" id="tomemo">Relire le mémo</button><button class="btn" id="again">Rejouer</button></div></div></section>`;
   if(quiz.gain) toast(`+${quiz.gain} pièces !`);
-  $("#back").onclick=()=>{quiz=null;render()}; $("#again").onclick=()=>startQuiz(quiz.k,quiz.from);
+  $("#back").onclick=()=>{quiz=null;render()}; $("#tomemo").onclick=()=>openMemo(quiz.k,"defis"); $("#again").onclick=()=>startQuiz(quiz.k,quiz.from);
 }
 render();
 </script>
