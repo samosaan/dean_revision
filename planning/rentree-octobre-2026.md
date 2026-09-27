@@ -19,20 +19,29 @@ Vacances jusqu'au **mardi 6 octobre**. Travail relevé dans l'application du col
 
 ## Plan de révision pendant les vacances
 
-Des séances courtes (20 à 30 min) valent mieux qu'une longue séance la veille. La prof de maths le demande explicitement : « ne pas attendre la veille de la rentrée pour réviser ».
+Ce plan reprend le visuel « Plan de travail pendant les vacances » en corrigeant ses erreurs. C'est aussi celui de l'application [L'expédition de Dean](../app/index.html) : séances de 45 min à 1 h, avec des « rappels express » de 10 min pour revoir plusieurs fois les mêmes notions.
 
 | Jour | Séance |
 |---|---|
-| Lun. 28 sept. | Maths : comparaison des entiers (relire + « Je m'entraîne 1ère fois ») |
-| Mar. 29 sept. | Histoire : lire la fiche Préhistoire, apprendre 2 définitions |
-| Mer. 30 sept. | Anglais : revoir le début du film, Kevin et sa famille. SVT : apprendre MRS GREN |
-| Jeu. 1er oct. | Histoire : les 5 définitions + les 2 dates |
-| Ven. 2 oct. | Maths : division euclidienne, apprendre le schéma par cœur |
-| Sam. 3 oct. | Maths : refaire les exercices de comparaison sur la fiche vierge, puis corriger. SVT : les cellules animale et végétale |
-| Dim. 4 oct. | Repos |
-| Lun. 5 oct. | Tour rapide : questions « Je vérifie » en maths, histoire, SVT et anglais. Préparer le cartable (dictionnaire !) |
-| Mar. 6 oct. soir | Histoire : dernière relecture pour le lendemain |
-| Jeu. 8 oct. soir | Maths : division euclidienne, refaire « Je m'entraîne 2 » |
+| Dim. 27 sept. | Histoire : objets d'art, 5 définitions, 2 dates, défi Histoire |
+| Lun. 28 sept. | Maths : comparaison (Je me souviens, fiche vierge, corrigé, défi) |
+| Mar. 29 sept. | Anglais : début de Home Alone, la famille de Kevin, défi. Rappel express Histoire |
+| Mer. 30 sept. | Français : idées, vocabulaire et plan pour la rédaction d'aventure. Rappel express Comparaison |
+| Jeu. 1er oct. | Matériel de Physique-chimie, quiz et 10 commandements à coller. Rappel express Anglais |
+| Ven. 2 oct. | SVT : lexique, MRS GREN, cellules, défi |
+| Sam. 3 oct. | Divisions 1/2 : vocabulaire, schéma 158 ÷ 12 de mémoire, exemple 884 ÷ 34, « Je m'entraîne 1 » ex. 1 |
+| Dim. 4 oct. | Divisions 2/2 : « Je m'entraîne 1 » ex. 2 et 3, la fleuriste. Rappel express SVT |
+| Lun. 5 oct. | Tour de piste : défis Comparaison, Anglais, SVT, Histoire. Cartable (dictionnaire) |
+| Mar. 6 oct. soir | Histoire : dernière relecture et défi pour le lendemain |
+| Mer. 7 oct. soir | Redessiner le schéma de la division, « Arrivée à la maison » |
+| Jeu. 8 oct. soir | Défi Divisions, refaire la fleuriste sans regarder |
+| Ven. 9 oct. matin | Schéma de la division une dernière fois |
+
+Corrections apportées aux visuels GPT :
+- « Travail à faire » annonçait « du lundi 6 au mercredi 15 octobre » : le 6 octobre est un mardi, et le travail se fait pendant les vacances, avant la rentrée.
+- Le plan plaçait l'évaluation d'histoire et le test sur les divisions le mardi 6 : l'histoire tombe le mercredi 7 et les divisions le vendredi 9.
+- Le plan citait un « Je m'entraîne 3 » en divisions : la fiche de la prof n'a que « Je m'entraîne 1 » et « 2 ».
+- La fiche d'histoire ajoute des éléments absents du cours (Mésolithique, grottes citées) : ils sont en bonus et ne sont pas au programme de l'évaluation.
 
 ## Suivi
 

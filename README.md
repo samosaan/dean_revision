@@ -16,3 +16,14 @@ Espace de révision de Dean (6e), tenu avec papa.
 2. Pour chaque devoir, ouvrir la fiche de la matière et la relire.
 3. Faire les questions « Je vérifie » sans regarder, puis corriger.
 4. Cocher ce qui est su dans le planning.
+
+## L'application
+
+[`app/index.html`](app/index.html) est l'application de révision de Dean, publiée ici : https://claude.ai/artifact/JzdwYiMZRXWwTiKAMnAsiV
+
+- **Ma journée** : les missions du jour sur un parcours de 13 étapes, des pièces à gagner, le compte à rebours des contrôles.
+- **Défis** : des quiz qui changent à chaque partie (comparaison, divisions, histoire, SVT, anglais).
+- **Mémo** : l'essentiel de chaque cours.
+- **Papa** : scores, points à retravailler, missions en retard.
+
+Les visuels faits avec GPT sont dans `visuels/`.
