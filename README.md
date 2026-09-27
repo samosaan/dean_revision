@@ -27,3 +27,10 @@ Espace de révision de Dean (6e), tenu avec papa.
 - **Papa** : scores, points à retravailler, missions en retard.
 
 Les visuels faits avec GPT sont dans `visuels/`.
+
+## Le site public
+
+Une version autonome de l'application est dans `docs/`, servie par GitHub Pages : https://samosaan.github.io/dean_revision/
+
+- Après chaque modification de `app/index.html`, lancer `tools/build-site.sh` pour régénérer `docs/index.html`.
+- Sur le site public, la progression est enregistrée sur l'appareil utilisé (tablette, téléphone), pas partagée entre appareils.
